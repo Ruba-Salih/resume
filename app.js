@@ -1,5 +1,6 @@
 const express = require("express");
 
+const userRoutes = require("./routes/userRouter");
 const templateRoutes = require("./routes/templateRouter");
 const resumeRouteres = require("./routes/resumeRouter");
 
@@ -9,6 +10,8 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // API routes
+app.use("/api/users", userRoutes);
+
 app.use("/api/auth", authRoutes);
 
 app.use("/api/templates", templateRoutes);
