@@ -1,73 +1,84 @@
 <script setup>
-import { ref } from "vue";
-import ResumeForm from "../components/ResumeForm.vue";
-import ResumePreview from "../components/ResumePreview.vue";
-
-const resume = ref({
-  name: "Ruba Ahmad",
-  summary: "Backend developer",
-  skills: ["Node.js", "MySQL", "Vue"]
-});
-
-</script>
-<template>
-  <main class="home">
-    <h1>Resume Builder</h1>
-    <p>Create your resume easily.</p>
-
-    <RouterLink to="/editor">
-      <button>Create Resume</button>
-    </RouterLink>
-  </main>
-</template>
-
-<style scoped>
-.home {
-  padding: 2rem;
-  text-align: center;
-}
-button {
-  padding: 0.75rem 1.5rem;
-  font-size: 1rem;
-}
-</style>
-
-<!--
-<script setup>
-import { ref, onMounted } from "vue";
-import api from "../services/api";
-
-const templates = ref([]);
-const loading = ref(true);
-const error = ref(null);
-
-onMounted(async () => {
-  try {
-    const res = await api.get("/templates");
-    templates.value = res.data;
-  } catch (err) {
-    error.value = "Failed to load templates";
-    console.error(err);
-  } finally {
-    loading.value = false;
-  }
-});
+import { RouterLink } from "vue-router";
 </script>
 
 <template>
-  <main style="padding: 2rem">
-    <h1>Resume Templates</h1>
+  <section class="mx-auto max-w-5xl px-4 py-16">
+    <!-- Hero -->
+    <div class="grid gap-10 md:grid-cols-2 md:items-center">
+      <div class="space-y-6">
+        <h1 class="text-4xl font-bold tracking-tight text-slate-900">
+          Build your resume.<br />
+          <span class="text-slate-600">Fast. Clean. Professional.</span>
+        </h1>
 
-    <p v-if="loading">Loading templates…</p>
-    <p v-if="error" style="color: red">{{ error }}</p>
+        <p class="text-lg text-slate-600">
+          Create and customize your resume with live preview, modern templates,
+          and easy editing — all in one place.
+        </p>
 
-    <ul v-if="!loading && !error">
-      <li v-for="template in templates" :key="template.id">
-        <strong>{{ template.name }}</strong>
-        <br />
-        <small>Used {{ template.usageCount }} times</small>
-      </li>
-    </ul>
-  </main>
+        <div class="flex gap-4">
+          <RouterLink
+            to="/editor"
+            class="inline-flex items-center justify-center rounded-xl bg-slate-900 px-6 py-3 text-sm font-semibold text-white hover:bg-slate-800"
+          >
+            Create Resume
+          </RouterLink>
+
+          <a
+            href="#features"
+            class="inline-flex items-center justify-center rounded-xl border border-slate-300 px-6 py-3 text-sm font-semibold text-slate-700 hover:bg-white"
+          >
+            Learn more
+          </a>
+        </div>
+      </div>
+
+      <!-- Visual mock -->
+      <div class="rounded-2xl border bg-white p-6 shadow-sm">
+        <div class="space-y-4">
+          <div class="h-4 w-2/3 rounded bg-slate-200"></div>
+          <div class="h-3 w-1/2 rounded bg-slate-200"></div>
+
+          <div class="mt-6 space-y-2">
+            <div class="h-2 w-full rounded bg-slate-100"></div>
+            <div class="h-2 w-5/6 rounded bg-slate-100"></div>
+            <div class="h-2 w-4/6 rounded bg-slate-100"></div>
+          </div>
+
+          <div class="mt-6 flex gap-2">
+            <div class="h-6 w-20 rounded bg-slate-900"></div>
+            <div class="h-6 w-20 rounded bg-slate-200"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Features -->
+    <div
+      id="features"
+      class="mt-20 grid gap-6 sm:grid-cols-2 md:grid-cols-3"
+    >
+      <div class="rounded-2xl border bg-white p-6 shadow-sm">
+        <h3 class="font-semibold text-slate-900">Live Preview</h3>
+        <p class="mt-2 text-sm text-slate-600">
+          See changes instantly as you edit your resume.
+        </p>
+      </div>
+
+      <div class="rounded-2xl border bg-white p-6 shadow-sm">
+        <h3 class="font-semibold text-slate-900">Modern Templates</h3>
+        <p class="mt-2 text-sm text-slate-600">
+          Choose from clean, professional designs.
+        </p>
+      </div>
+
+      <div class="rounded-2xl border bg-white p-6 shadow-sm">
+        <h3 class="font-semibold text-slate-900">Export Ready</h3>
+        <p class="mt-2 text-sm text-slate-600">
+          Download and share your resume easily.
+        </p>
+      </div>
+    </div>
+  </section>
 </template>
--->
