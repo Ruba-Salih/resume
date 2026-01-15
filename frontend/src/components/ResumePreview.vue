@@ -2,14 +2,25 @@
 defineProps({
   resume: {
     type: Object,
-    required: true
+    default: () => ({
+      header: {},
+      skills: [],
+      experience: [],
+      education: []
+    })
   },
-  template: Object
+  template: {
+    type: Object,
+    default: null
+  }
 });
+
 </script>
 
 <template>
+  <!-- ✅ HARD GUARD -->
   <article
+    v-if="resume && resume.header"
     class="mx-auto max-w-2xl rounded-xl border bg-white p-8 shadow-sm"
     :style="{
       fontFamily: template?.layoutConfig?.font,
@@ -24,13 +35,14 @@ defineProps({
       >
         {{ resume.header.name || 'Your Name' }}
       </h1>
+
       <p class="text-sm text-slate-600">
         {{ resume.header.email }} · {{ resume.header.phone }}
       </p>
     </header>
 
     <!-- Skills -->
-    <section v-if="resume.skills.length" class="mb-6">
+    <section v-if="resume.skills?.length" class="mb-6">
       <h2 class="mb-2 text-sm font-semibold uppercase tracking-wider">
         Skills
       </h2>
@@ -51,12 +63,16 @@ defineProps({
     </section>
 
     <!-- Experience -->
-    <section v-if="resume.experience.length" class="mb-6">
+    <section v-if="resume.experience?.length" class="mb-6">
       <h2 class="mb-3 text-sm font-semibold uppercase tracking-wider">
         Experience
       </h2>
 
-      <div v-for="(exp, index) in resume.experience" :key="index" class="mb-4">
+      <div
+        v-for="(exp, index) in resume.experience"
+        :key="index"
+        class="mb-4"
+      >
         <div class="flex justify-between text-sm font-medium">
           <span>{{ exp.role }} · {{ exp.company }}</span>
           <span class="text-slate-500">{{ exp.years }}</span>
@@ -68,7 +84,7 @@ defineProps({
     </section>
 
     <!-- Education -->
-    <section v-if="resume.education.length">
+    <section v-if="resume.education?.length">
       <h2 class="mb-3 text-sm font-semibold uppercase tracking-wider">
         Education
       </h2>

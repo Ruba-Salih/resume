@@ -1,10 +1,13 @@
 <script setup>
-defineProps({
-  experience: Array
+const props = defineProps({
+  experience: {
+    type: Array,
+    required: true
+  }
 });
 
 function addExperience() {
-  experience.push({
+  props.experience.push({
     company: "",
     role: "",
     years: "",
@@ -13,7 +16,7 @@ function addExperience() {
 }
 
 function removeExperience(index) {
-  experience.splice(index, 1);
+  props.experience.splice(index, 1);
 }
 </script>
 
@@ -21,11 +24,7 @@ function removeExperience(index) {
   <section>
     <h3>Experience</h3>
 
-    <div
-      v-for="(exp, index) in experience"
-      :key="index"
-      class="block"
-    >
+    <div v-for="(exp, index) in experience" :key="index">
       <input v-model="exp.company" placeholder="Company" />
       <input v-model="exp.role" placeholder="Role" />
       <input v-model="exp.years" placeholder="Years" />

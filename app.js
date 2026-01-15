@@ -1,10 +1,17 @@
 const express = require("express");
 
+const cors = require("cors"); 
 const userRoutes = require("./routes/userRouter");
+const authRoutes = require("./routes/authRouter");
 const templateRoutes = require("./routes/templateRouter");
 const resumeRouteres = require("./routes/resumeRouter");
 
 const app = express();
+
+app.use(cors({
+  origin: "http://127.0.0.1:5173",
+  credentials: true
+}));
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));

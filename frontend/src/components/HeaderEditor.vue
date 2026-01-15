@@ -1,6 +1,9 @@
 <script setup>
-defineProps({
-  header: Object
+const props = defineProps({
+  header: {
+    type: Object,
+    required: true
+  }
 });
 </script>
 

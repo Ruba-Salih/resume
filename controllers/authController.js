@@ -8,20 +8,34 @@ const JWT_EXPIRES = "7d";
 // REGISTER
 exports.register = async (req, res) => {
   try {
-    const { email, password } = req.body;
+    console.log("REGISTER BODY:", req.body);
+
+    const { name, email, password } = req.body;
+
+    if (!name || !email || !password) {
+      return res.status(400).json({
+        message: "Name, email and password are required"
+      });
+    }
 
     const hashed = await bcrypt.hash(password, 7);
 
-    const user = await User.create({
+    await User.create({
+      name,
       email,
       passwordHash: hashed
     });
 
     res.status(201).json({ message: "User created" });
   } catch (err) {
-    res.status(500).json({ message: "Register failed" });
+    console.error("REGISTER ERROR:", err);
+    res.status(500).json({
+      message: "Register failed",
+      error: err.message
+    });
   }
 };
+
 
 // LOGIN
 exports.login = async (req, res) => {

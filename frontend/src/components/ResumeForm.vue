@@ -13,39 +13,16 @@ defineProps({
 </script>
 
 <template>
-  <div class="space-y-8">
+  <!-- ✅ GUARD -->
+  <div v-if="resume" class="space-y-8">
 
-    <!-- Header -->
-    <section class="rounded-xl border bg-white p-5 shadow-sm">
-      <h3 class="mb-4 text-lg font-semibold text-slate-800">
-        Personal Information
-      </h3>
-      <HeaderEditor :header="resume.header" />
-    </section>
+    <HeaderEditor :header="resume.header" />
 
-    <!-- Skills -->
-    <section class="rounded-xl border bg-white p-5 shadow-sm">
-      <h3 class="mb-4 text-lg font-semibold text-slate-800">
-        Skills
-      </h3>
-      <SkillsEditor :skills="resume.skills" />
-    </section>
+    <SkillsEditor :skills="resume.skills"  @update="resume.skills = $event"/>
 
-    <!-- Experience -->
-    <section class="rounded-xl border bg-white p-5 shadow-sm">
-      <h3 class="mb-4 text-lg font-semibold text-slate-800">
-        Experience
-      </h3>
-      <ExperienceEditor :experience="resume.experience" />
-    </section>
+    <ExperienceEditor :experience="resume.experience" />
 
-    <!-- Education -->
-    <section class="rounded-xl border bg-white p-5 shadow-sm">
-      <h3 class="mb-4 text-lg font-semibold text-slate-800">
-        Education
-      </h3>
-      <EducationEditor :education="resume.education" />
-    </section>
+    <EducationEditor :education="resume.education" />
 
   </div>
 </template>

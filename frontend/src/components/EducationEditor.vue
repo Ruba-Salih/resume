@@ -1,10 +1,13 @@
 <script setup>
-defineProps({
-  education: Array
+const props = defineProps({
+  education: {
+    type: Array,
+    required: true
+  }
 });
 
 function addEducation() {
-  education.push({
+  props.education.push({
     school: "",
     degree: "",
     year: ""
@@ -12,7 +15,7 @@ function addEducation() {
 }
 
 function removeEducation(index) {
-  education.splice(index, 1);
+  props.education.splice(index, 1);
 }
 </script>
 

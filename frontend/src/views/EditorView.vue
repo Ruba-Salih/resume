@@ -4,7 +4,7 @@ import ResumeForm from "../components/ResumeForm.vue";
 import ResumePreview from "../components/ResumePreview.vue";
 import TemplatePicker from "../components/TemplatePicker.vue";
 import { getTemplates } from "../services/templates";
-import { saveResume } from "../services/resumes";
+import { createResume } from "../services/resumes";
 
 /* Resume state */
 const resume = ref({
@@ -27,8 +27,14 @@ const saving = ref(false);
 const message = ref("");
 
 onMounted(async () => {
-  templates.value = await getTemplates();
-  selectedTemplate.value = templates.value[0] || null;
+  try {
+    templates.value = await getTemplates();
+    selectedTemplate.value = templates.value[0] || null;
+  } catch (err) {
+    console.error("Failed to load templates:", err);
+    templates.value = [];
+    selectedTemplate.value = null;
+  }
 });
 
 async function handleSave() {
@@ -38,7 +44,7 @@ async function handleSave() {
   message.value = "";
 
   try {
-    await saveResume({
+    await createResume({
       title: resume.value.header.name || "Untitled Resume",
       data: resume.value,
       templateId: selectedTemplate.value.id
@@ -53,7 +59,6 @@ async function handleSave() {
   }
 }
 </script>
-
 <template>
   <div class="grid gap-6 lg:grid-cols-2">
     <!-- LEFT -->
@@ -82,6 +87,7 @@ async function handleSave() {
         @select="selectedTemplate = $event"
       />
 
+      <!-- ✅ CORRECT -->
       <ResumeForm :resume="resume" />
     </section>
 
@@ -91,6 +97,7 @@ async function handleSave() {
         Live Preview
       </h2>
 
+      <!-- ✅ CORRECT -->
       <ResumePreview
         :resume="resume"
         :template="selectedTemplate"
