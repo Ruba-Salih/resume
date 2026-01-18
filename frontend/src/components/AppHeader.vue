@@ -1,6 +1,10 @@
 <script setup>
 import { computed } from "vue";
 import { useRouter } from "vue-router";
+import LanguageSwitcher from "@/components/LanguageSwitcher.vue";
+import { useI18n } from "vue-i18n";
+
+useI18n();
 
 const router = useRouter();
 
@@ -22,32 +26,37 @@ function logout() {
   localStorage.removeItem("token");
   router.push("/");
 }
+
+function goHome() {
+  router.push(isAuthenticated.value ? "/home" : "/");
+}
 </script>
 
 <template>
-  <!-- ================= HEADER ================= -->
-  <header class="bg-white border-b border-slate-200">
-    <div
-      class="mx-auto max-w-7xl px-6 py-4
-             flex items-center justify-between"
-    >
+  <header class="border-b border-slate-200 bg-white">
+    <div class="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
+
       <!-- Logo -->
       <div
-        class="text-xl font-bold text-slate-900 cursor-pointer"
-        @click="router.push('/home')"
+        class="cursor-pointer text-xl font-bold text-slate-900"
+        @click="goHome"
       >
-        ResumeBuilder
+        {{ $t("common.appName", "ResumeBuilder") }}
       </div>
 
-      <!-- Navigation -->
-      <nav class="flex items-center gap-4">
-        <!-- NOT logged in -->
+      <!-- Right side -->
+      <div class="flex items-center gap-4">
+
+        <!-- Language -->
+        <LanguageSwitcher />
+
+        <!-- Auth -->
         <template v-if="!isAuthenticated">
           <button
             @click="goLogin"
             class="text-sm font-medium text-slate-700 hover:text-slate-900 transition"
           >
-            Login
+            {{ $t("common.login") }}
           </button>
 
           <button
@@ -56,11 +65,10 @@ function logout() {
                    text-sm font-medium text-white
                    hover:bg-slate-800 transition"
           >
-            Register
+            {{ $t("common.register") }}
           </button>
         </template>
 
-        <!-- Logged in -->
         <button
           v-else
           @click="logout"
@@ -68,9 +76,9 @@ function logout() {
                  text-sm font-medium text-slate-700
                  hover:bg-slate-100 transition"
         >
-          Logout
+          {{ $t("common.logout") }}
         </button>
-      </nav>
+      </div>
     </div>
   </header>
 </template>

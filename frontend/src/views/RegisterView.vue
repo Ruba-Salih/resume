@@ -2,6 +2,9 @@
 import { ref } from "vue";
 import { useRouter } from "vue-router";
 import { register } from "../services/auth";
+import { useI18n } from "vue-i18n";
+
+const { t } = useI18n();
 
 const router = useRouter();
 
@@ -16,16 +19,16 @@ async function handleRegister() {
   loading.value = true;
 
   if (!name.value || !email.value || !password.value) {
-    error.value = "All fields are required";
+    error.value = t("register.errorRequired");
     loading.value = false;
     return;
   }
 
   try {
     await register(name.value, email.value, password.value);
-    router.push("/login");
+    router.push("/home");
   } catch (err) {
-    error.value = "Registration failed. Try a different email.";
+    error.value = t("register.errorExists");
   } finally {
     loading.value = false;
   }
@@ -49,10 +52,10 @@ async function handleRegister() {
 
         <div>
           <h2 class="text-2xl font-bold text-slate-900">
-            Create your account
+            {{ $t("register.title") }}
           </h2>
           <p class="text-sm text-slate-600">
-            Start building your professional resume
+            {{ $t("register.subtitle") }}
           </p>
         </div>
       </div>
@@ -71,7 +74,7 @@ async function handleRegister() {
         <!-- Name -->
         <div>
           <label class="block text-sm font-medium text-slate-700 mb-1">
-            Full name
+            {{ $t("register.nameLabel") }}
           </label>
           <div class="relative">
             <span class="absolute inset-y-0 left-3 flex items-center text-slate-400">
@@ -85,7 +88,7 @@ async function handleRegister() {
             <input
               v-model="name"
               type="text"
-              placeholder="John Doe"
+              :placeholder="$t('register.namePlaceholder')"
               class="w-full rounded-lg border pl-10 px-3 py-2 text-sm focus:border-slate-900 focus:outline-none"
             />
           </div>
@@ -94,7 +97,7 @@ async function handleRegister() {
         <!-- Email -->
         <div>
           <label class="block text-sm font-medium text-slate-700 mb-1">
-            Email address
+            {{ $t("register.emailLabel") }}
           </label>
           <div class="relative">
             <span class="absolute inset-y-0 left-3 flex items-center text-slate-400">
@@ -108,7 +111,7 @@ async function handleRegister() {
             <input
               v-model="email"
               type="email"
-              placeholder="you@example.com"
+              :placeholder="$t('register.emailPlaceholder')"
               class="w-full rounded-lg border pl-10 px-3 py-2 text-sm focus:border-slate-900 focus:outline-none"
             />
           </div>
@@ -117,7 +120,7 @@ async function handleRegister() {
         <!-- Password -->
         <div>
           <label class="block text-sm font-medium text-slate-700 mb-1">
-            Password
+            {{ $t("register.passwordLabel") }}
           </label>
           <div class="relative">
             <span class="absolute inset-y-0 left-3 flex items-center text-slate-400">
@@ -138,7 +141,7 @@ async function handleRegister() {
             />
           </div>
           <p class="mt-1 text-xs text-slate-500">
-            Minimum 6 characters
+            {{ $t("register.passwordHint") }}
           </p>
         </div>
 
@@ -148,20 +151,21 @@ async function handleRegister() {
           :disabled="loading"
           class="mt-2 w-full rounded-xl bg-slate-900 py-2.5 text-sm font-semibold text-white hover:bg-slate-800 disabled:opacity-50"
         >
-          {{ loading ? "Creating account..." : "Create account" }}
+          {{ loading ? $t("register.submitting") : $t("register.submit") }}
         </button>
       </div>
 
       <!-- Footer -->
       <p class="mt-6 text-center text-sm text-slate-600">
-        Already have an account?
+        {{ $t("register.haveAccount") }}
         <RouterLink
           to="/login"
           class="font-medium text-slate-900 hover:underline"
         >
-          Login
+          {{ $t("common.login") }}
         </RouterLink>
       </p>
+
     </div>
   </div>
 </template>

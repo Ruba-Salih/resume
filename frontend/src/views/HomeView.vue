@@ -60,22 +60,21 @@ function formatDate(dateStr) {
       <div class="grid gap-12 md:grid-cols-2 md:items-center">
         <div class="space-y-6">
           <h1 class="text-5xl font-bold tracking-tight text-slate-900">
-            Build your resume
+            {{ $t("index.headline") }}
             <span class="block text-slate-500 text-3xl mt-2">
-              fast, clean, and professional
+              {{ $t("index.subtitle") }}
             </span>
           </h1>
 
           <p class="text-lg text-slate-600 max-w-xl">
-            Pick a modern template and create a professional resume in minutes.
-            Edit anytime. Export when ready.
+            {{ $t("index.description") }}
           </p>
 
           <button
             @click="createResume"
             class="inline-flex items-center gap-2 rounded-xl bg-slate-900 px-7 py-3 text-sm font-semibold text-white hover:bg-slate-800"
           >
-            Create new resume
+            {{ $t("index.createCta") }}
             <span class="text-lg">→</span>
           </button>
         </div>
@@ -103,7 +102,7 @@ function formatDate(dateStr) {
     >
       <div class="mb-6 flex items-center justify-between">
         <h2 class="text-2xl font-semibold text-slate-900">
-          Continue where you left off
+          {{ $t("index.recentTitle") }}
         </h2>
       </div>
 
@@ -125,15 +124,15 @@ function formatDate(dateStr) {
           </div>
 
           <h3 class="truncate font-semibold text-slate-900">
-            {{ r.title || "Untitled resume" }}
+            {{ r.title || $t("index.untitled") }}
           </h3>
 
           <p class="mt-1 text-sm text-slate-500">
-            Edited {{ formatDate(r.updatedAt) }}
+            {{ $t("index.edited") }} {{ formatDate(r.updatedAt) }}
           </p>
 
           <div class="mt-3 text-sm font-medium text-slate-700 group-hover:text-slate-900">
-            Open →
+            {{ $t("index.open") }} →
           </div>
         </article>
       </div>
@@ -142,7 +141,7 @@ function formatDate(dateStr) {
     <!-- TEMPLATES SECTION -->
     <section class="mx-auto mt-28 max-w-6xl px-6 pb-24">
       <h2 class="mb-6 text-2xl font-semibold text-slate-900">
-        Start from a template
+        {{ $t("index.templatesTitle") }}
       </h2>
 
       <TemplatePicker

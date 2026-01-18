@@ -2,6 +2,9 @@
 import { ref } from "vue";
 import { useRouter } from "vue-router";
 import { login } from "../services/auth";
+import { useI18n } from "vue-i18n";
+
+const { t } = useI18n();
 
 const router = useRouter();
 
@@ -15,7 +18,7 @@ async function handleLogin() {
   loading.value = true;
 
   if (!email.value || !password.value) {
-    error.value = "Email and password are required";
+    error.value = t("login.errorRequired");
     loading.value = false;
     return;
   }
@@ -29,7 +32,7 @@ async function handleLogin() {
     // ✅ Redirect after login
     router.push("/home");
   } catch (err) {
-    error.value = "Invalid email or password";
+    error.value = t("login.errorInvalid");
   } finally {
     loading.value = false;
   }
@@ -42,11 +45,12 @@ async function handleLogin() {
 
       <!-- Title -->
       <h2 class="text-2xl font-bold text-slate-900">
-        Welcome back
+        {{ $t("login.title") }}
       </h2>
       <p class="mt-1 text-sm text-slate-600">
-        Log in to continue building your resume
+        {{ $t("login.subtitle") }}
       </p>
+
 
       <!-- Error -->
       <p
@@ -62,12 +66,12 @@ async function handleLogin() {
         <!-- Email -->
         <div>
           <label class="block text-sm font-medium text-slate-700 mb-1">
-            Email address
+             {{ $t("login.emailLabel") }}
           </label>
           <input
             v-model="email"
             type="email"
-            placeholder="you@example.com"
+            :placeholder="$t('login.emailPlaceholder')"
             class="w-full rounded-lg border px-3 py-2 text-sm focus:border-slate-900 focus:outline-none"
           />
         </div>
@@ -75,12 +79,12 @@ async function handleLogin() {
         <!-- Password -->
         <div>
           <label class="block text-sm font-medium text-slate-700 mb-1">
-            Password
+            {{ $t("login.passwordLabel") }}
           </label>
           <input
             v-model="password"
             type="password"
-            placeholder="••••••••"
+            :placeholder="$t('login.passwordPlaceholder')"
             class="w-full rounded-lg border px-3 py-2 text-sm focus:border-slate-900 focus:outline-none"
           />
         </div>
@@ -91,18 +95,18 @@ async function handleLogin() {
           :disabled="loading"
           class="mt-2 w-full rounded-xl bg-slate-900 py-2.5 text-sm font-semibold text-white hover:bg-slate-800 disabled:opacity-50"
         >
-          {{ loading ? "Logging in..." : "Login" }}
+          {{ loading ? $t("login.submitting") : $t("login.submit") }}
         </button>
       </div>
 
       <!-- Footer -->
       <p class="mt-6 text-center text-sm text-slate-600">
-        Don’t have an account?
+        {{ $t("login.noAccount") }}
         <RouterLink
           to="/register"
           class="font-medium text-slate-900 hover:underline"
         >
-          Create one
+          {{ $t("login.createAccount") }}
         </RouterLink>
       </p>
     </div>

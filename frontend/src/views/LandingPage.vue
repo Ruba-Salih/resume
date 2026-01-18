@@ -24,15 +24,14 @@ function goRegister() {
         <div class="grid gap-12 md:grid-cols-2 md:items-center">
           <div class="space-y-6">
             <h1 class="text-5xl font-bold tracking-tight text-slate-900">
-              Build your resume.<br />
-              <span class="text-slate-600">
-                Fast. Clean. Professional.
-              </span>
+              {{ $t("landing.headline") }}<br />
+            <span class="text-slate-600">
+              {{ $t("landing.subtitle") }}
+            </span>
             </h1>
 
             <p class="text-lg text-slate-600 max-w-xl">
-              Create stunning resumes with modern templates, live preview,
-              and easy editing — all in one place.
+              {{ $t("landing.description") }}
             </p>
 
             <!-- HERO ACTIONS -->
@@ -41,14 +40,14 @@ function goRegister() {
                 @click="goRegister"
                 class="rounded-xl bg-slate-900 px-6 py-3 text-sm font-semibold text-white hover:bg-slate-800"
               >
-                Get Started Free
+                {{ $t("landing.getStarted") }}
               </button>
 
               <button
                 @click="goLogin"
                 class="rounded-xl border border-slate-300 px-6 py-3 text-sm font-semibold text-slate-700 hover:bg-white"
               >
-                Login
+                {{ $t("landing.login") }}
               </button>
             </div>
           </div>
@@ -83,10 +82,10 @@ function goRegister() {
     <!-- Section header -->
     <div class="mb-12 text-center">
       <h2 class="text-3xl font-bold text-slate-900">
-        Same resume, different layouts
+        {{ $t("landing.examplesTitle") }}
       </h2>
       <p class="mt-2 text-slate-600">
-        One profile — styled with multiple professional templates
+        {{ $t("landing.examplesSubtitle") }}
       </p>
     </div>
 
@@ -97,7 +96,7 @@ function goRegister() {
       <div class="rounded-2xl border border-slate-200 bg-slate-50 p-6 shadow-sm hover:shadow-md transition">
 
         <span class="text-xs font-semibold uppercase text-blue-600">
-          Classic layout
+          {{ $t("landing.classic") }}
         </span>
 
 
@@ -130,15 +129,14 @@ function goRegister() {
       <!-- ================= SIDEBAR LAYOUT ================= -->
       
       <div
-  class="relative z-10
-         rounded-2xl border border-slate-300 bg-white p-6
-         shadow-lg hover:shadow-xl transition
-         -translate-y-12"
->
-
+        class="relative z-10
+              rounded-2xl border border-slate-300 bg-white p-6
+              shadow-lg hover:shadow-xl transition
+              -translate-y-12"
+      >
 
         <span class="text-xs font-semibold uppercase text-blue-600">
-          Sidebar layout
+          {{ $t("landing.sidebar") }}
         </span>
 
 
@@ -183,7 +181,7 @@ function goRegister() {
       <div class="rounded-2xl border border-slate-200 bg-slate-50 p-6 shadow-sm hover:shadow-md transition">
 
         <span class="text-xs font-semibold uppercase text-blue-600">
-          Minimal layout
+          {{ $t("landing.minimal") }}
         </span>
 
         <h3 class="mt-3 text-lg font-semibold text-slate-900">
@@ -216,7 +214,7 @@ function goRegister() {
         @click="goRegister"
         class="rounded-xl bg-slate-900 px-8 py-3 text-sm font-semibold text-white hover:bg-slate-800"
       >
-        Create your resume now
+        {{ $t("landing.ctaBottom") }}
       </button>
     </div>
 
@@ -227,23 +225,23 @@ function goRegister() {
       <section class="bg-white border-t">
         <div class="mx-auto max-w-7xl px-6 py-20 grid gap-8 sm:grid-cols-2 md:grid-cols-3">
           <div class="rounded-2xl border p-6 shadow-sm">
-            <h3 class="font-semibold text-slate-900">Live Preview</h3>
+            <h3 class="font-semibold text-slate-900">{{ $t("landing.features.livePreview") }}</h3>
             <p class="mt-2 text-sm text-slate-600">
-              See changes instantly while editing your resume.
+              {{ $t("landing.features.livePreviewDesc") }}
             </p>
           </div>
 
           <div class="rounded-2xl border p-6 shadow-sm">
-            <h3 class="font-semibold text-slate-900">Multiple Layouts</h3>
+            <h3 class="font-semibold text-slate-900">{{ $t("landing.features.layouts") }}</h3>
             <p class="mt-2 text-sm text-slate-600">
-              Choose from classic, modern, sidebar, and minimal designs.
+              {{ $t("landing.features.layoutsDesc") }}
             </p>
           </div>
 
           <div class="rounded-2xl border p-6 shadow-sm">
-            <h3 class="font-semibold text-slate-900">Export Ready</h3>
+            <h3 class="font-semibold text-slate-900">{{ $t("landing.features.export") }}</h3>
             <p class="mt-2 text-sm text-slate-600">
-              Download and share your resume anytime.
+              {{ $t("landing.features.exportDesc") }}
             </p>
           </div>
         </div>

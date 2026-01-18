@@ -1,18 +1,20 @@
 <script setup>
 import { ref, onMounted } from "vue";
 import { useRoute } from "vue-router";
-import ResumeForm from "../components/ResumeForm.vue";
-import ResumePreview from "../components/ResumePreview.vue";
-import TemplatePicker from "../components/TemplatePicker.vue";
-import { getTemplates } from "../services/templates";
+import { useI18n } from "vue-i18n";
+import ResumeForm from "@/components/ResumeForm.vue";
+import ResumePreview from "@/components/ResumePreview.vue";
+import TemplatePicker from "@/components/TemplatePicker.vue";
+import { getTemplates } from "@/services/templates";
 import {
   createResume,
   updateResume,
   getResumeById
-} from "../services/resumes";
+} from "@/services/resumes";
 import BaseLayout from "@/layouts/BaseLayout.vue";
 
 const route = useRoute();
+const { t } = useI18n();
 
 /* ===== STATE ===== */
 const resume = ref({
@@ -77,22 +79,22 @@ async function handleSave() {
 
   try {
     const payload = {
-      title: resume.value.header.name || "Untitled Resume",
+      title: resume.value.header.name || t("editor.untitled"),
       data: resume.value,
       templateId: selectedTemplate.value.id
     };
 
     if (isEditMode) {
       await updateResume(resumeId, payload);
-      message.value = "✅ Resume updated";
+      message.value = t("editor.updated");
     } else {
       await createResume(payload);
-      message.value = "✅ Resume saved";
+      message.value = t("editor.saved");
     }
 
   } catch (err) {
     console.error(err);
-    message.value = "❌ Failed to save resume";
+    message.value = t("editor.failed");
   } finally {
     saving.value = false;
   }
@@ -112,10 +114,10 @@ async function handleSave() {
         <div class="flex items-center justify-between border-b px-6 py-4">
           <div>
             <h2 class="text-lg font-semibold text-slate-900">
-              Resume Editor
+              {{ $t("editor.title") }}
             </h2>
             <p class="text-xs text-slate-500">
-              Edit content & choose layout
+              {{ $t("editor.subtitle") }}
             </p>
           </div>
 
@@ -126,7 +128,7 @@ async function handleSave() {
                    font-medium text-white hover:bg-slate-800
                    disabled:opacity-50"
           >
-            {{ saving ? "Saving…" : "Save" }}
+            {{ saving ? $t("common.saving") : $t("common.save") }}
           </button>
         </div>
 
@@ -153,7 +155,7 @@ async function handleSave() {
           <!-- Form -->
           <section>
             <h3 class="mb-3 text-sm font-semibold text-slate-700">
-              Content
+              {{ $t("editor.content") }}
             </h3>
 
             <ResumeForm :resume="resume" />
@@ -169,11 +171,10 @@ async function handleSave() {
       >
         <div class="mb-4 flex items-center justify-between">
           <h2 class="text-lg font-semibold text-slate-900">
-            Live Preview
+            {{ $t("editor.preview") }}
           </h2>
-
           <span class="text-xs text-slate-500">
-            Updates instantly
+            {{ $t("editor.previewHint") }}
           </span>
         </div>
 
