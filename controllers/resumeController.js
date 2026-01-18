@@ -77,7 +77,6 @@ exports.updateResume = async (req, res) => {
       return res.status(404).json({ message: "Resume not found" });
     }
 
-    // whitelist allowed fields
     const allowedFields = ["title", "data"];
     const updates = Object.fromEntries(
       Object.entries(req.body).filter(([key]) =>
@@ -112,3 +111,20 @@ exports.deleteResume = async (req, res) => {
     res.status(500).json({ message: "Failed to delete resume" });
   }
 };
+
+// GET /api/resumes/recent?limit=4
+exports.getRecentResumes = async (req, res) => {
+  try {
+    const limit = Math.min(parseInt(req.query.limit, 10) || 4, 20); // max 20
+    const resumes = await Resume.findAll({
+      where: { userId: req.user.id },
+      order: [["updatedAt", "DESC"]],
+      limit
+    });
+
+    res.json(resumes); // [] if none
+  } catch (err) {
+    res.status(500).json({ message: "Failed to fetch recent resumes" });
+  }
+};
+

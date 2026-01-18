@@ -16,10 +16,7 @@ function goRegister() {
 <template>
   <div class="min-h-screen flex flex-col bg-slate-50">
 
-    <!-- ================= HEADER ================= -->
     <BaseLayout>
-
-    <!-- ================= MAIN ================= -->
     <main class="flex-1">
 
       <!-- HERO -->

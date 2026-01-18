@@ -5,72 +5,70 @@ import ResumeForm from "../components/ResumeForm.vue";
 import ResumePreview from "../components/ResumePreview.vue";
 import TemplatePicker from "../components/TemplatePicker.vue";
 import { getTemplates } from "../services/templates";
-import { createResume } from "../services/resumes";
+import {
+  createResume,
+  updateResume,
+  getResumeById
+} from "../services/resumes";
 import BaseLayout from "@/layouts/BaseLayout.vue";
 
-/* Resume state */
+const route = useRoute();
+
+/* ===== STATE ===== */
 const resume = ref({
-  header: {
-    name: "",
-    email: "",
-    phone: ""
-  },
+  header: { name: "", email: "", phone: "" },
   skills: [],
   experience: [],
   education: []
 });
 
-/* Templates */
 const templates = ref([]);
 const selectedTemplate = ref(null);
 
-/* Save state */
 const saving = ref(false);
 const message = ref("");
 
-const route = useRoute();
+/* Detect edit mode */
+const resumeId = route.params.id; // 👈 THIS is key
+const isEditMode = !!resumeId;
 
+/* ===== INIT ===== */
 onMounted(async () => {
   try {
-    const data = await getTemplates();
-
-    templates.value = data.map(t => ({
+    // 1️⃣ Load templates
+    templates.value = (await getTemplates()).map(t => ({
       ...t,
       layoutType: t.layoutType || t.layout_type || t.slug
     }));
 
-    const templateId = route.query.templateId;
+    // 2️⃣ EDIT MODE → load resume
+    if (isEditMode) {
+      const existing = await getResumeById(resumeId);
 
-    if (templateId) {
+      // load content
+      resume.value = existing.data;
+
+      // select same template
       selectedTemplate.value =
-        templates.value.find(t => t.id === Number(templateId)) || null;
-    } else {
-      selectedTemplate.value =
-        templates.value.find(t => t.layoutType === "classic") ||
-        templates.value[0] ||
-        null;
+        templates.value.find(t => t.id === existing.templateId) || null;
+
+      return;
     }
 
+    // 3️⃣ CREATE MODE → template from query or default
+    const templateId = route.query.templateId;
+    selectedTemplate.value =
+      templates.value.find(t => t.id === Number(templateId)) ||
+      templates.value.find(t => t.slug === "classic") ||
+      templates.value[0] ||
+      null;
+
   } catch (err) {
-    console.error("Failed to load templates:", err);
+    console.error("Editor init failed:", err);
   }
 });
 
-
-function selectTemplate() {
-  const templateId = route.query.templateId;
-
-  if (templateId) {
-    selectedTemplate.value =
-      templates.value.find(t => t.id === Number(templateId)) || null;
-  } else {
-    // ALWAYS default to classic
-    selectedTemplate.value =
-      templates.value.find(t => t.slug === "classic") || null;
-  }
-}
-
-
+/* ===== SAVE ===== */
 async function handleSave() {
   if (!selectedTemplate.value) return;
 
@@ -78,13 +76,20 @@ async function handleSave() {
   message.value = "";
 
   try {
-    await createResume({
+    const payload = {
       title: resume.value.header.name || "Untitled Resume",
       data: resume.value,
       templateId: selectedTemplate.value.id
-    });
+    };
 
-    message.value = "✅ Resume saved successfully";
+    if (isEditMode) {
+      await updateResume(resumeId, payload);
+      message.value = "✅ Resume updated";
+    } else {
+      await createResume(payload);
+      message.value = "✅ Resume saved";
+    }
+
   } catch (err) {
     console.error(err);
     message.value = "❌ Failed to save resume";
@@ -93,6 +98,7 @@ async function handleSave() {
   }
 }
 </script>
+
 <template>
   <BaseLayout>
     <div class="grid gap-8 lg:grid-cols-[420px_1fr]">
@@ -137,10 +143,6 @@ async function handleSave() {
 
           <!-- Templates -->
           <section>
-            <h3 class="mb-3 text-sm font-semibold text-slate-700">
-              Template
-            </h3>
-
             <TemplatePicker
               :templates="templates"
               :selectedTemplate="selectedTemplate"

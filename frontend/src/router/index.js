@@ -16,7 +16,6 @@ const router = createRouter({
       component: LandingPage
     },
 
-    // 🔐 Auth (ALWAYS accessible)
     {
       path: "/login",
       name: "Login",
@@ -38,7 +37,7 @@ const router = createRouter({
 
     // ✍️ Editor (protected)
     {
-      path: "/editor",
+      path: "/editor/:id?",
       name: "Editor",
       component: EditorView,
       meta: { requiresAuth: true }
