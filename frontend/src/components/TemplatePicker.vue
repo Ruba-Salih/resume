@@ -1,9 +1,8 @@
 <script setup>
+import TemplateStructurePreview from "./TemplateStructurePreview.vue";
+
 defineProps({
-  templates: {
-    type: Array,
-    required: true
-  },
+  templates: { type: Array, required: true },
   selectedTemplate: Object
 });
 
@@ -12,9 +11,7 @@ const emit = defineEmits(["select"]);
 
 <template>
   <div class="space-y-3">
-    <h3 class="text-sm font-semibold text-slate-700">
-      Templates
-    </h3>
+    <h3 class="text-sm font-semibold text-slate-700">Templates</h3>
 
     <div class="grid grid-cols-2 gap-3">
       <button
@@ -28,14 +25,17 @@ const emit = defineEmits(["select"]);
             : 'hover:border-slate-400'
         "
       >
-        <div class="font-medium">
-          {{ template.name }}
+        <!-- ✅ STRUCTURE PREVIEW -->
+        <TemplateStructurePreview :type="template.layoutType || 'classic'" />
+
+        <!-- Debug line (keep temporarily) -->
+        <div class="mt-2 text-xs text-slate-500">
+          layoutType: {{ template.layoutType }}
         </div>
 
-        <div
-          class="mt-2 h-2 w-full rounded"
-          :style="{ backgroundColor: template.layoutConfig.colors.primary }"
-        />
+        <div class="mt-1 font-medium text-sm">
+          {{ template.name }}
+        </div>
       </button>
     </div>
   </div>

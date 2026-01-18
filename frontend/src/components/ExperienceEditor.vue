@@ -21,18 +21,85 @@ function removeExperience(index) {
 </script>
 
 <template>
-  <section>
-    <h3>Experience</h3>
+  <section class="space-y-6">
 
-    <div v-for="(exp, index) in experience" :key="index">
-      <input v-model="exp.company" placeholder="Company" />
-      <input v-model="exp.role" placeholder="Role" />
-      <input v-model="exp.years" placeholder="Years" />
-      <textarea v-model="exp.description" placeholder="Description"></textarea>
+    <!-- Header -->
+    <div class="flex items-center justify-between">
+      <h3 class="text-sm font-semibold text-slate-800 uppercase">
+        Experience
+      </h3>
 
-      <button @click="removeExperience(index)">Remove</button>
+      <button
+        @click="addExperience"
+        class="rounded-lg border border-slate-300 px-3 py-1.5
+               text-sm font-medium text-slate-700
+               hover:bg-slate-100 transition"
+      >
+        + Add
+      </button>
     </div>
 
-    <button @click="addExperience">Add experience</button>
+    <!-- Experience items -->
+    <div
+      v-for="(exp, index) in experience"
+      :key="index"
+      class="rounded-xl border bg-slate-50 p-4 space-y-4
+             hover:shadow-sm transition"
+    >
+      <!-- Top row -->
+      <div class="grid gap-3 sm:grid-cols-2">
+        <input
+          v-model="exp.company"
+          placeholder="Company"
+          class="rounded-lg border px-3 py-2 text-sm
+                 focus:border-slate-900 focus:outline-none"
+        />
+
+        <input
+          v-model="exp.role"
+          placeholder="Role"
+          class="rounded-lg border px-3 py-2 text-sm
+                 focus:border-slate-900 focus:outline-none"
+        />
+      </div>
+
+      <!-- Second row -->
+      <input
+        v-model="exp.years"
+        placeholder="Years (e.g. 2021 – Present)"
+        class="w-full rounded-lg border px-3 py-2 text-sm
+               focus:border-slate-900 focus:outline-none"
+      />
+
+      <!-- Description -->
+      <textarea
+        v-model="exp.description"
+        rows="3"
+        placeholder="Describe your responsibilities and achievements"
+        class="w-full rounded-lg border px-3 py-2 text-sm
+               focus:border-slate-900 focus:outline-none resize-none"
+      ></textarea>
+
+      <!-- Actions -->
+      <div class="flex justify-end">
+        <button
+          @click="removeExperience(index)"
+          class="text-xs font-medium text-red-600
+                 hover:underline"
+        >
+          Remove
+        </button>
+      </div>
+    </div>
+
+    <!-- Empty state -->
+    <p
+      v-if="!experience.length"
+      class="text-sm text-slate-500 italic"
+    >
+      No experience added yet.
+    </p>
+
   </section>
 </template>
+

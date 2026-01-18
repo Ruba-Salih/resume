@@ -1,41 +1,66 @@
 <script setup>
-import { RouterLink } from "vue-router";
+import { ref, onMounted } from "vue";
+import { useRouter } from "vue-router";
+import TemplatePicker from "../components/TemplatePicker.vue";
+import { getTemplates } from "../services/templates";
+import BaseLayout from "@/layouts/BaseLayout.vue";
+
+const router = useRouter();
+
+const templates = ref([]);
+const selectedTemplate = ref(null);
+
+onMounted(async () => {
+  const data = await getTemplates();
+  templates.value = data;
+
+  // ✅ Default selection = Classic
+  selectedTemplate.value =
+    templates.value.find(t => t.slug === "classic") ||
+    templates.value[0] ||
+    null;
+});
+
+function createResume() {
+  // ✅ ALWAYS allow entering editor
+  router.push({
+    path: "/editor",
+    query: selectedTemplate.value
+      ? { templateId: selectedTemplate.value.id }
+      : {}
+  });
+}
 </script>
 
+
 <template>
-  <section class="mx-auto max-w-5xl px-4 py-16">
-    <!-- Hero -->
-    <div class="grid gap-10 md:grid-cols-2 md:items-center">
+
+  <BaseLayout>
+  <section class="mx-auto max-w-6xl px-6 py-20">
+
+    <!-- HERO -->
+    <div class="grid gap-14 md:grid-cols-2 md:items-center">
       <div class="space-y-6">
-        <h1 class="text-4xl font-bold tracking-tight text-slate-900">
+        <h1 class="text-5xl font-bold tracking-tight text-slate-900">
           Build your resume.<br />
           <span class="text-slate-600">Fast. Clean. Professional.</span>
         </h1>
 
-        <p class="text-lg text-slate-600">
-          Create and customize your resume with live preview, modern templates,
-          and easy editing — all in one place.
+        <p class="text-lg text-slate-600 max-w-xl">
+          Choose a modern resume layout and start building your professional
+          resume in minutes.
         </p>
 
-        <div class="flex gap-4">
-          <RouterLink
-            to="/editor"
-            class="inline-flex items-center justify-center rounded-xl bg-slate-900 px-6 py-3 text-sm font-semibold text-white hover:bg-slate-800"
-          >
-            Create Resume
-          </RouterLink>
-
-          <a
-            href="#features"
-            class="inline-flex items-center justify-center rounded-xl border border-slate-300 px-6 py-3 text-sm font-semibold text-slate-700 hover:bg-white"
-          >
-            Learn more
-          </a>
-        </div>
+        <button
+          @click="createResume"
+          class="rounded-xl bg-slate-900 px-6 py-3 text-sm font-semibold text-white hover:bg-slate-800"
+        >
+          Create Resume
+        </button>
       </div>
 
-      <!-- Visual mock -->
-      <div class="rounded-2xl border bg-white p-6 shadow-sm">
+      <!-- RIGHT MOCK -->
+      <div class="rounded-2xl border bg-white p-8 shadow-sm">
         <div class="space-y-4">
           <div class="h-4 w-2/3 rounded bg-slate-200"></div>
           <div class="h-3 w-1/2 rounded bg-slate-200"></div>
@@ -54,31 +79,19 @@ import { RouterLink } from "vue-router";
       </div>
     </div>
 
-    <!-- Features -->
-    <div
-      id="features"
-      class="mt-20 grid gap-6 sm:grid-cols-2 md:grid-cols-3"
-    >
-      <div class="rounded-2xl border bg-white p-6 shadow-sm">
-        <h3 class="font-semibold text-slate-900">Live Preview</h3>
-        <p class="mt-2 text-sm text-slate-600">
-          See changes instantly as you edit your resume.
-        </p>
-      </div>
+    <!-- TEMPLATES SECTION -->
+    <div class="mt-24">
+      <h2 class="mb-6 text-2xl font-semibold text-slate-900">
+        Choose a template
+      </h2>
 
-      <div class="rounded-2xl border bg-white p-6 shadow-sm">
-        <h3 class="font-semibold text-slate-900">Modern Templates</h3>
-        <p class="mt-2 text-sm text-slate-600">
-          Choose from clean, professional designs.
-        </p>
-      </div>
-
-      <div class="rounded-2xl border bg-white p-6 shadow-sm">
-        <h3 class="font-semibold text-slate-900">Export Ready</h3>
-        <p class="mt-2 text-sm text-slate-600">
-          Download and share your resume easily.
-        </p>
-      </div>
+      <TemplatePicker
+        :templates="templates"
+        :selectedTemplate="selectedTemplate"
+        @select="selectedTemplate = $event"
+      />
     </div>
+
   </section>
+  </BaseLayout>
 </template>

@@ -8,26 +8,50 @@ async function seedTemplates() {
     await sequelize.authenticate();
     console.log("✅ Database connected");
 
-    await sequelize.sync(); // ensure tables exist
+    await sequelize.sync(); // dev-safe
 
     const templates = [
       {
-        name: "Modern Blue",
-        slug: "modern-blue",
+        name: "Classic",
+        slug: "classic",
+        layoutType: "classic",
         layoutConfig: {
           font: "Inter",
-          sectionsOrder: ["header", "summary", "experience", "skills"],
-          colors: { primary: "#1e90ff" }
+          sectionsOrder: ["header", "skills", "experience", "education"],
+          colors: { primary: "#0f172a", text: "#020617" }
         },
         usageCount: 0
       },
       {
-        name: "Clean Gray",
-        slug: "clean-gray",
+        name: "Sidebar",
+        slug: "sidebar",
+        layoutType: "sidebar",
+        layoutConfig: {
+          font: "Inter",
+          sectionsOrder: ["header", "skills", "education", "experience"],
+          colors: { primary: "#334155", text: "#020617" }
+        },
+        usageCount: 0
+      },
+      {
+        name: "Modern",
+        slug: "modern",
+        layoutType: "modern",
+        layoutConfig: {
+          font: "Poppins",
+          sectionsOrder: ["header", "experience", "skills", "education"],
+          colors: { primary: "#2563eb", text: "#020617" }
+        },
+        usageCount: 0
+      },
+      {
+        name: "Minimal",
+        slug: "minimal",
+        layoutType: "minimal",
         layoutConfig: {
           font: "Roboto",
-          sectionsOrder: ["header", "experience", "skills", "education"],
-          colors: { primary: "#444444" }
+          sectionsOrder: ["header", "experience"],
+          colors: { primary: "#020617", text: "#020617" }
         },
         usageCount: 0
       }

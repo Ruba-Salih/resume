@@ -18,6 +18,12 @@ const Template = sequelize.define("Template", {
     unique: true
   },
 
+  layoutType: {
+    type: DataTypes.STRING,
+    allowNull: false,
+    defaultValue: "classic"
+  },
+
   layoutConfig: {
     type: DataTypes.JSON,
     allowNull: false
